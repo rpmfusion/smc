@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -8,8 +8,8 @@ URL:            http://www.secretmaryo.org
 Source0:        http://downloads.sourceforge.net/smclone/%{name}-%{version}.tar.bz2
 Source1:        smc.sh
 Source2:        dochelper.pl
+Patch0:         smc-1.5-boost-1.36.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:  automake
 BuildRequires:  boost-devel >= 1.31
 BuildRequires:  cegui-devel >= 0.5
 BuildRequires:  libGLU-devel
@@ -31,14 +31,12 @@ built upon SDL. It is similar to the classic game Super Mario.
 
 %prep
 %setup -q
-
+%patch0 -p1
 # Delete useless files to avoid them being installed
 rm -f file data/pixmaps/world/tiles/green_1/todo.txt
 
 #Fix EOL chars
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
-
-# ./autogen.sh
 
 
 %build
@@ -115,6 +113,9 @@ fi
 
 
 %changelog
+* Sun Aug 17 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.5-2
+- Rebuild against boost 1.36
+
 * Thu Jul 24 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.5-1
 - New upstream release 1.5
 

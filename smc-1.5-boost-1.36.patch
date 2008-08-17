@@ -1,0 +1,60 @@
+diff -up smc-1.5/src/core/game_core.cpp~ smc-1.5/src/core/game_core.cpp
+--- smc-1.5/src/core/game_core.cpp~	2008-08-17 09:59:13.000000000 +0200
++++ smc-1.5/src/core/game_core.cpp	2008-08-17 09:59:13.000000000 +0200
+@@ -1544,29 +1544,29 @@ vector<string> Get_Directory_Files( stri
+ 			if( fs::is_directory( *dir_itr ) )
+ 			{
+ 				// ignore hidden directories
+-				if( dir_itr->leaf().find( "." ) == 0 )
++				if( dir_itr->path().leaf().find( "." ) == 0 )
+ 				{
+ 					continue;
+ 				}
+ 
+ 				if( with_directories )
+ 				{
+-					valid_files.push_back( dir + "/" + dir_itr->leaf() );
++					valid_files.push_back( dir + "/" + dir_itr->path().leaf() );
+ 				}
+ 
+ 				// load all items from the sub-directory
+-				vector<string> new_valid_files = Get_Directory_Files( dir + "/" + dir_itr->leaf(), file_type, with_directories );
++				vector<string> new_valid_files = Get_Directory_Files( dir + "/" + dir_itr->path().leaf(), file_type, with_directories );
+ 				valid_files.insert( valid_files.end(), new_valid_files.begin(), new_valid_files.end() );
+ 			}
+ 			// valid file
+-			else if( file_type.empty() || dir_itr->leaf().rfind( file_type ) != string::npos )
++			else if( file_type.empty() || dir_itr->path().leaf().rfind( file_type ) != string::npos )
+ 			{
+-				valid_files.push_back( dir + "/" + dir_itr->leaf() );
++				valid_files.push_back( dir + "/" + dir_itr->path().leaf() );
+ 			}
+ 		}
+ 		catch( const std::exception &ex )
+ 		{
+-			printf( "%s %s\n", dir_itr->leaf().c_str(), ex.what() );
++			printf( "%s %s\n", dir_itr->path().leaf().c_str(), ex.what() );
+ 		}
+ 	}
+ 
+diff -up smc-1.5/src/overworld/worlds.cpp~ smc-1.5/src/overworld/worlds.cpp
+--- smc-1.5/src/overworld/worlds.cpp~	2008-08-17 10:04:55.000000000 +0200
++++ smc-1.5/src/overworld/worlds.cpp	2008-08-17 10:04:55.000000000 +0200
+@@ -111,7 +111,7 @@ void cOverworld_Manager :: Load_Dir( str
+ 	{
+ 		try
+ 		{
+-			string current_dir = dir_itr->leaf();
++			string current_dir = dir_itr->path().leaf();
+ 
+ 			// only directories with an existing description
+ 			if( fs::is_directory( *dir_itr ) && File_Exists( dir + "/" + current_dir + "/description.xml" ) )
+@@ -138,7 +138,7 @@ void cOverworld_Manager :: Load_Dir( str
+ 		}
+ 		catch( const std::exception &ex )
+ 		{
+-			printf( "%s %s\n", dir_itr->leaf().c_str(), ex.what() );
++			printf( "%s %s\n", dir_itr->path().leaf().c_str(), ex.what() );
+ 		}
+ 	}
+ }
