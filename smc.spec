@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -31,7 +31,7 @@ built upon SDL. It is similar to the classic game Super Mario.
 
 %prep
 %setup -q
-%patch0 -p1
+#patch0 -p1
 # Delete useless files to avoid them being installed
 rm -f file data/pixmaps/world/tiles/green_1/todo.txt
 
@@ -113,6 +113,9 @@ fi
 
 
 %changelog
+* Mon Sep 15 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.5-3
+- Rebuild for rawhide boost DOWNGRADE to 1.34 <GRRR>
+
 * Sun Aug 17 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.5-2
 - Rebuild against boost 1.36
 
