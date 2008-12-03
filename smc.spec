@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -113,6 +113,9 @@ fi
 
 
 %changelog
+* Wed Dec  3 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.5-4
+- Rebuild for new cegui
+
 * Mon Sep 15 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.5-3
 - Rebuild for rawhide boost DOWNGRADE to 1.34 <GRRR>
 
