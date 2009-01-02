@@ -1,6 +1,6 @@
 Name:           smc
-Version:        1.5
-Release:        4%{?dist}
+Version:        1.7
+Release:        1%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -31,10 +31,7 @@ built upon SDL. It is similar to the classic game Super Mario.
 
 %prep
 %setup -q
-#patch0 -p1
-# Delete useless files to avoid them being installed
-rm -f file data/pixmaps/world/tiles/green_1/todo.txt
-
+%patch0 -p1
 #Fix EOL chars
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
 
@@ -103,16 +100,19 @@ fi
 
 %files
 %defattr(-,root,root,-)
+%doc credits.txt docs/*.html docs/*.txt docs/style.css
 %{_bindir}/%{name}
 %{_bindir}/%{name}.bin
 %{_datadir}/%{name}
 %{_datadir}/applications/dribble-%{name}.desktop
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-%doc credits.txt docs/*.html docs/license.txt docs/SMC.txt docs/style.css
-%doc docs/todo*
 
 
 %changelog
+* Thu Jan  1 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 1.7-1
+- New upstream release 1.7
+- Rebuild for new boost
+
 * Wed Dec  3 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.5-4
 - Rebuild for new cegui
 
