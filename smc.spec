@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -109,6 +109,9 @@ fi
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.7-2
+- rebuild for new F11 features
+
 * Thu Jan  1 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 1.7-1
 - New upstream release 1.7
 - Rebuild for new boost
