@@ -1,7 +1,7 @@
-diff -up smc-1.7/src/core/game_core.cpp~ smc-1.7/src/core/game_core.cpp
---- smc-1.7/src/core/game_core.cpp~	2009-01-01 15:11:05.000000000 +0100
-+++ smc-1.7/src/core/game_core.cpp	2009-01-01 15:11:05.000000000 +0100
-@@ -1591,32 +1591,32 @@ vector<std::string> Get_Directory_Files(
+diff -up smc-1.8/src/core/game_core.cpp.orig smc-1.8/src/core/game_core.cpp
+--- smc-1.8/src/core/game_core.cpp.orig	2009-04-08 07:48:08.000000000 +0200
++++ smc-1.8/src/core/game_core.cpp	2009-04-11 09:31:59.000000000 +0200
+@@ -1632,32 +1632,32 @@ vector<std::string> Get_Directory_Files(
  			if( fs::is_directory( *dir_itr ) )
  			{
  				// ignore hidden directories
@@ -26,8 +26,8 @@ diff -up smc-1.7/src/core/game_core.cpp~ smc-1.7/src/core/game_core.cpp
  				}
  			}
  			// valid file
--			else if( file_type.empty() || dir_itr->leaf().rfind( file_type ) != string::npos )
-+			else if( file_type.empty() || dir_itr->path().leaf().rfind( file_type ) != string::npos )
+-			else if( file_type.empty() || dir_itr->leaf().rfind( file_type ) != std::string::npos )
++			else if( file_type.empty() || dir_itr->path().leaf().rfind( file_type ) != std::string::npos )
  			{
 -				valid_files.push_back( dir + "/" + dir_itr->leaf() );
 +				valid_files.push_back( dir + "/" + dir_itr->path().leaf() );
@@ -40,19 +40,19 @@ diff -up smc-1.7/src/core/game_core.cpp~ smc-1.7/src/core/game_core.cpp
  		}
  	}
  
-diff -up smc-1.7/src/overworld/world_manager.cpp~ smc-1.7/src/overworld/world_manager.cpp
---- smc-1.7/src/overworld/world_manager.cpp~	2009-01-01 15:11:31.000000000 +0100
-+++ smc-1.7/src/overworld/world_manager.cpp	2009-01-01 15:11:31.000000000 +0100
-@@ -111,7 +111,7 @@ void cOverworld_Manager :: Load_Dir( str
+diff -up smc-1.8/src/overworld/world_manager.cpp.orig smc-1.8/src/overworld/world_manager.cpp
+--- smc-1.8/src/overworld/world_manager.cpp.orig	2009-02-18 05:10:12.000000000 +0100
++++ smc-1.8/src/overworld/world_manager.cpp	2009-04-11 09:31:34.000000000 +0200
+@@ -116,7 +116,7 @@ void cOverworld_Manager :: Load_Dir( con
  	{
  		try
  		{
--			string current_dir = dir_itr->leaf();
-+			string current_dir = dir_itr->path().leaf();
+-			std::string current_dir = dir_itr->leaf();
++			std::string current_dir = dir_itr->path().leaf();
  
  			// only directories with an existing description
  			if( fs::is_directory( *dir_itr ) && File_Exists( dir + "/" + current_dir + "/description.xml" ) )
-@@ -138,7 +138,7 @@ void cOverworld_Manager :: Load_Dir( str
+@@ -143,7 +143,7 @@ void cOverworld_Manager :: Load_Dir( con
  		}
  		catch( const std::exception &ex )
  		{
