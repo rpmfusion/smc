@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -109,6 +109,9 @@ fi
 
 
 %changelog
+* Sat Oct 10 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.8-2
+- rebuilt
+
 * Sat Apr 11 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 1.8-1
 - New upstream release 1.8
 
