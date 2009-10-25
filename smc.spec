@@ -1,6 +1,6 @@
 Name:           smc
-Version:        1.8
-Release:        3%{?dist}
+Version:        1.9
+Release:        1%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -8,7 +8,6 @@ URL:            http://www.secretmaryo.org
 Source0:        http://downloads.sourceforge.net/smclone/%{name}-%{version}.tar.bz2
 Source1:        smc.sh
 Source2:        dochelper.pl
-Patch0:         smc-1.5-boost-1.36.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  boost-devel >= 1.31
 BuildRequires:  cegui-devel >= 0.5
@@ -31,7 +30,6 @@ built upon SDL. It is similar to the classic game Super Mario.
 
 %prep
 %setup -q
-%patch0 -p1
 #Fix EOL chars
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
 
@@ -109,6 +107,9 @@ fi
 
 
 %changelog
+* Sun Oct 25 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9-1
+- New upstream release 1.9
+
 * Sat Oct 24 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.8-3
 - rebuild for new libboost
 
