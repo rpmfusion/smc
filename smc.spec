@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -107,6 +107,9 @@ fi
 
 
 %changelog
+* Sat Jan 23 2010 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9-2
+- rebuild for new libboost
+
 * Sun Oct 25 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9-1
 - New upstream release 1.9
 
