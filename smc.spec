@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -8,7 +8,10 @@ URL:            http://www.secretmaryo.org
 Source0:        http://downloads.sourceforge.net/smclone/%{name}-%{version}.tar.bz2
 Source1:        smc.sh
 Source2:        dochelper.pl
+# suggested in http://thread.gmane.org/gmane.linux.redhat.fedora.rpmfusion.devel/7651/focus=7665
+Patch0:         http://repo.calcforge.org/temp/smc-1.9-fix-implicit-linking.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:  libX11-devel
 BuildRequires:  boost-devel >= 1.31
 BuildRequires:  cegui-devel >= 0.5
 BuildRequires:  libGLU-devel
@@ -32,7 +35,7 @@ built upon SDL. It is similar to the classic game Super Mario.
 %setup -q
 #Fix EOL chars
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
-
+%patch0 -p1 -b .patch0
 
 %build
 %configure
@@ -107,6 +110,10 @@ fi
 
 
 %changelog
+* Sun May 23 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.9-4
+- add patch and BR libX11-devel as kevin suggested in
+  http://thread.gmane.org/gmane.linux.redhat.fedora.rpmfusion.devel/7651/focus=7665
+
 * Sun May 16 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.9-3
 - rebuilt
 
