@@ -12,6 +12,7 @@ Source2:        dochelper.pl
 Patch0:         http://repo.calcforge.org/temp/smc-1.9-fix-implicit-linking.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libX11-devel
+BuildRequires:  gettext-devel
 BuildRequires:  boost-devel >= 1.31
 BuildRequires:  cegui-devel >= 0.5
 BuildRequires:  libGLU-devel
@@ -38,7 +39,7 @@ sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
 %patch0 -p1 -b .patch0
 
 %build
-%configure
+%configure LIBS=-lboost_system
 make %{?_smp_mflags}
 
 # Generate the credit list from lots of little text files scattered around the
@@ -113,6 +114,9 @@ fi
 * Sun May 23 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.9-4
 - add patch and BR libX11-devel as kevin suggested in
   http://thread.gmane.org/gmane.linux.redhat.fedora.rpmfusion.devel/7651/focus=7665
+- add BR gettext-devel
+- add "LIBS=-lboost_system" to configure to fix another DSO issue; better
+  fix needed in the long term
 
 * Sun May 16 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.9-3
 - rebuilt
