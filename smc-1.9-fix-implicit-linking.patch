@@ -1,0 +1,165 @@
+diff -ur smc-1.9/configure smc-1.9-fix-implicit-linking/configure
+--- smc-1.9/configure	2009-08-17 18:00:45.000000000 +0200
++++ smc-1.9-fix-implicit-linking/configure	2010-05-19 07:17:07.000000000 +0200
+@@ -667,6 +667,8 @@
+ MSGFMT
+ GETTEXT_MACRO_VERSION
+ USE_NLS
++X11_LIBS
++X11_CFLAGS
+ CEGUI_LIBS
+ CEGUI_CFLAGS
+ SDL_LIBS
+@@ -786,6 +788,8 @@
+ SDL_LIBS
+ CEGUI_CFLAGS
+ CEGUI_LIBS
++X11_CFLAGS
++X11_LIBS
+ CC
+ CFLAGS
+ CXXCPP'
+@@ -1450,6 +1454,8 @@
+   CEGUI_CFLAGS
+               C compiler flags for CEGUI, overriding pkg-config
+   CEGUI_LIBS  linker flags for CEGUI, overriding pkg-config
++  X11_CFLAGS  C compiler flags for X11, overriding pkg-config
++  X11_LIBS    linker flags for X11, overriding pkg-config
+   CC          C compiler command
+   CFLAGS      C compiler flags
+   CXXCPP      C++ preprocessor
+@@ -4274,6 +4280,119 @@
+ CPPFLAGS="$CPPFLAGS $CEGUI_CFLAGS"
+ LIBS="$LIBS $CEGUI_LIBS"
+ 
++# Check for the X11 library
++
++pkg_failed=no
++{ $as_echo "$as_me:$LINENO: checking for X11" >&5
++$as_echo_n "checking for X11... " >&6; }
++
++if test -n "$X11_CFLAGS"; then
++    pkg_cv_X11_CFLAGS="$X11_CFLAGS"
++ elif test -n "$PKG_CONFIG"; then
++    if test -n "$PKG_CONFIG" && \
++    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"x11\"") >&5
++  ($PKG_CONFIG --exists --print-errors "x11") 2>&5
++  ac_status=$?
++  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; then
++  pkg_cv_X11_CFLAGS=`$PKG_CONFIG --cflags "x11" 2>/dev/null`
++else
++  pkg_failed=yes
++fi
++ else
++    pkg_failed=untried
++fi
++if test -n "$X11_LIBS"; then
++    pkg_cv_X11_LIBS="$X11_LIBS"
++ elif test -n "$PKG_CONFIG"; then
++    if test -n "$PKG_CONFIG" && \
++    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"x11\"") >&5
++  ($PKG_CONFIG --exists --print-errors "x11") 2>&5
++  ac_status=$?
++  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; then
++  pkg_cv_X11_LIBS=`$PKG_CONFIG --libs "x11" 2>/dev/null`
++else
++  pkg_failed=yes
++fi
++ else
++    pkg_failed=untried
++fi
++
++
++
++if test $pkg_failed = yes; then
++
++if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
++        _pkg_short_errors_supported=yes
++else
++        _pkg_short_errors_supported=no
++fi
++        if test $_pkg_short_errors_supported = yes; then
++	        X11_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "x11" 2>&1`
++        else
++	        X11_PKG_ERRORS=`$PKG_CONFIG --print-errors "x11" 2>&1`
++        fi
++	# Put the nasty error message in config.log where it belongs
++	echo "$X11_PKG_ERRORS" >&5
++
++	{ { $as_echo "$as_me:$LINENO: error: Package requirements (x11) were not met:
++
++$X11_PKG_ERRORS
++
++Consider adjusting the PKG_CONFIG_PATH environment variable if you
++installed software in a non-standard prefix.
++
++Alternatively, you may set the environment variables X11_CFLAGS
++and X11_LIBS to avoid the need to call pkg-config.
++See the pkg-config man page for more details.
++" >&5
++$as_echo "$as_me: error: Package requirements (x11) were not met:
++
++$X11_PKG_ERRORS
++
++Consider adjusting the PKG_CONFIG_PATH environment variable if you
++installed software in a non-standard prefix.
++
++Alternatively, you may set the environment variables X11_CFLAGS
++and X11_LIBS to avoid the need to call pkg-config.
++See the pkg-config man page for more details.
++" >&2;}
++   { (exit 1); exit 1; }; }
++elif test $pkg_failed = untried; then
++	{ { $as_echo "$as_me:$LINENO: error: in \`$ac_pwd':" >&5
++$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
++{ { $as_echo "$as_me:$LINENO: error: The pkg-config script could not be found or is too old.  Make sure it
++is in your PATH or set the PKG_CONFIG environment variable to the full
++path to pkg-config.
++
++Alternatively, you may set the environment variables X11_CFLAGS
++and X11_LIBS to avoid the need to call pkg-config.
++See the pkg-config man page for more details.
++
++To get pkg-config, see <http://pkg-config.freedesktop.org/>.
++See \`config.log' for more details." >&5
++$as_echo "$as_me: error: The pkg-config script could not be found or is too old.  Make sure it
++is in your PATH or set the PKG_CONFIG environment variable to the full
++path to pkg-config.
++
++Alternatively, you may set the environment variables X11_CFLAGS
++and X11_LIBS to avoid the need to call pkg-config.
++See the pkg-config man page for more details.
++
++To get pkg-config, see <http://pkg-config.freedesktop.org/>.
++See \`config.log' for more details." >&2;}
++   { (exit 1); exit 1; }; }; }
++else
++	X11_CFLAGS=$pkg_cv_X11_CFLAGS
++	X11_LIBS=$pkg_cv_X11_LIBS
++        { $as_echo "$as_me:$LINENO: result: yes" >&5
++$as_echo "yes" >&6; }
++	:
++fi
++CPPFLAGS="$CPPFLAGS $X11_CFLAGS"
++LIBS="$LIBS $X11_LIBS"
++
+ # Check for the gettext library
+ 
+   { $as_echo "$as_me:$LINENO: checking whether NLS is requested" >&5
+diff -ur smc-1.9/configure.ac smc-1.9-fix-implicit-linking/configure.ac
+--- smc-1.9/configure.ac	2009-08-17 15:59:00.000000000 +0200
++++ smc-1.9-fix-implicit-linking/configure.ac	2010-05-19 07:16:42.000000000 +0200
+@@ -57,6 +57,11 @@
+ CPPFLAGS="$CPPFLAGS $CEGUI_CFLAGS"
+ LIBS="$LIBS $CEGUI_LIBS"
+ 
++# Check for the X11 library
++PKG_CHECK_MODULES(X11, x11)
++CPPFLAGS="$CPPFLAGS $X11_CFLAGS"
++LIBS="$LIBS $X11_LIBS"
++
+ # Check for the gettext library
+ AM_GNU_GETTEXT([external])
+ 
