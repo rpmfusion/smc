@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -111,6 +111,9 @@ fi
 
 
 %changelog
+* Wed Aug 25 2010 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9-5
+- rebuild for new libboost
+
 * Sun May 23 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.9-4
 - add patch and BR libX11-devel as kevin suggested in
   http://thread.gmane.org/gmane.linux.redhat.fedora.rpmfusion.devel/7651/focus=7665
