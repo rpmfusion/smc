@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -12,10 +12,12 @@ Source2:        dochelper.pl
 Patch0:         http://repo.calcforge.org/temp/smc-1.9-fix-implicit-linking.patch
 # patch from upstream forum
 Patch1:         smc-fixes-for-cegui-v0-7.diff
+# submitted upstream
+Patch2:         smc-1.9-boost-filesystem-v3.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libX11-devel
 BuildRequires:  gettext-devel
-BuildRequires:  boost-devel >= 1.31
+BuildRequires:  boost-devel >= 1.46
 BuildRequires:  cegui-devel >= 0.7
 BuildRequires:  libGLU-devel
 BuildRequires:  pkgconfig >= 0.9.0
@@ -40,6 +42,7 @@ built upon SDL. It is similar to the classic game Super Mario.
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
 %patch0 -p1 -b .patch0
 %patch1 -p1 -b .cegui07
+%patch2 -p1
 
 
 %build
@@ -115,6 +118,9 @@ fi
 
 
 %changelog
+* Thu Feb 10 2011 Hans de Goede <j.w.r.degoede@hhs.nl> - 1.9-7
+- rebuild for new libboost
+
 * Mon Jan  3 2011 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9-6
 - rebuild for new cegui
 
