@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -14,7 +14,6 @@ Patch0:         http://repo.calcforge.org/temp/smc-1.9-fix-implicit-linking.patc
 Patch1:         smc-fixes-for-cegui-v0-7.diff
 # submitted upstream
 Patch2:         smc-1.9-boost-filesystem-v3.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libX11-devel
 BuildRequires:  gettext-devel
 BuildRequires:  boost-devel >= 1.46
@@ -76,7 +75,6 @@ EOF
 
 
 %install
-rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
 install -pm0644 data/icon/window_32.png \
@@ -89,22 +87,17 @@ desktop-file-install --vendor dribble \
                      %{name}.desktop
 
 
-%clean
-rm -rf %{buildroot}
-
-
 %post
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
-
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
+
+%posttrans
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files
@@ -118,6 +111,9 @@ fi
 
 
 %changelog
+* Sat Jul 23 2011 Hans de Goede <j.w.r.degoede@gmail.com> - 1.9-8
+- rebuild for new libboost
+
 * Thu Feb 10 2011 Hans de Goede <j.w.r.degoede@hhs.nl> - 1.9-7
 - rebuild for new libboost
 
