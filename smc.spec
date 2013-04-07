@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -82,7 +82,10 @@ install -pm0644 data/icon/window_32.png \
 mv %{buildroot}%{_bindir}/%{name} %{buildroot}%{_bindir}/%{name}.bin
 install -pm0755 %{SOURCE1} %{buildroot}%{_bindir}/%{name}
 
-desktop-file-install --vendor dribble \
+desktop-file-install \
+%if 0%{?fedora} && 0%{?fedora} < 19
+                     --vendor dribble \
+%endif
                      --dir %{buildroot}%{_datadir}/applications \
                      %{name}.desktop
 
@@ -101,16 +104,18 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files
-%defattr(-,root,root,-)
 %doc credits.txt docs/*.html docs/*.txt docs/style.css
 %{_bindir}/%{name}
 %{_bindir}/%{name}.bin
 %{_datadir}/%{name}
-%{_datadir}/applications/dribble-%{name}.desktop
+%{_datadir}/applications/*%{name}.desktop
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 
 
 %changelog
+* Sun Apr  7 2013 Hans de Goede <j.w.r.degoede@gmail.com> - 1.9-13
+- Rebuild for new libboost and cegui
+
 * Thu Nov 01 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.9-12
 - Rebuilt for new boost
 
@@ -182,7 +187,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Tue Jan 08 2008 Ian Chapman <packages[AT]amiga-hardware.com> 1.4.1-1
 - Upgrade to 1.4.1
 
-* Sat Dec 02 2007 Ian Chapman <packages[AT]amiga-hardware.com> 1.3-1
+* Sun Dec 02 2007 Ian Chapman <packages[AT]amiga-hardware.com> 1.3-1
 - Upgrade to 1.3
 - Minor update to .desktop file due to new validation rules
 
