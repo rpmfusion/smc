@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -16,7 +16,7 @@ Patch1:         smc-fixes-for-cegui-v0-7.diff
 Patch2:         smc-1.9-boost-filesystem-v3.patch
 BuildRequires:  libX11-devel
 BuildRequires:  gettext-devel
-BuildRequires:  boost-devel >= 1.46
+BuildRequires:  boost-devel >= 1.54
 BuildRequires:  cegui-devel >= 0.7
 BuildRequires:  libGLU-devel
 BuildRequires:  pkgconfig >= 0.9.0
@@ -113,6 +113,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Aug  6 2013 Hans de Goede <j.w.r.degoede@gmail.com> - 1.9-14
+- Rebuild for new libboost
+
 * Sun Apr  7 2013 Hans de Goede <j.w.r.degoede@gmail.com> - 1.9-13
 - Rebuild for new libboost and cegui
 
