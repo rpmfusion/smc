@@ -1,0 +1,376 @@
+diff -ur smc-1.9/src/audio/random_sound.cpp smc-1.9.new/src/audio/random_sound.cpp
+--- smc-1.9/src/audio/random_sound.cpp	2009-04-24 19:55:24.000000000 +0200
++++ smc-1.9.new/src/audio/random_sound.cpp	2014-06-13 16:42:01.985063618 +0200
+@@ -22,7 +22,7 @@
+ #include "../core/math/utilities.h"
+ #include "../core/i18n.h"
+ // CEGUI
+-#include "CEGUIXMLAttributes.h"
++#include <CEGUI/XMLAttributes.h>
+ 
+ namespace SMC
+ {
+@@ -485,11 +485,11 @@
+ 	editbox->subscribeEvent( CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber( &cRandom_Sound::Editor_Filename_Text_Changed, this ) );
+ 
+ 	// continuous
+-	CEGUI::Checkbox *checkbox = static_cast<CEGUI::Checkbox *>(wmgr.createWindow( "TaharezLook/Checkbox", "editor_sound_continuous" ));
++	CEGUI::ToggleButton *checkbox = static_cast<CEGUI::ToggleButton *>(wmgr.createWindow( "TaharezLook/ToggleButton", "editor_sound_continuous" ));
+ 	Editor_Add( UTF8_("Continuous"), UTF8_("Check if the sound should be played continuously instead of randomly"), checkbox, 50 );
+ 
+ 	checkbox->setSelected( m_continuous );
+-	checkbox->subscribeEvent( CEGUI::Checkbox::EventCheckStateChanged, CEGUI::Event::Subscriber( &cRandom_Sound::Editor_Continuous_Changed, this ) );
++	checkbox->subscribeEvent( CEGUI::ToggleButton::EventSelectStateChanged, CEGUI::Event::Subscriber( &cRandom_Sound::Editor_Continuous_Changed, this ) );
+ 
+ 	// delay min
+ 	editbox = static_cast<CEGUI::Editbox *>(wmgr.createWindow( "TaharezLook/Editbox", "editor_sound_delay_min" ));
+@@ -554,7 +554,7 @@
+ bool cRandom_Sound :: Editor_Continuous_Changed( const CEGUI::EventArgs &event )
+ {
+ 	const CEGUI::WindowEventArgs &windowEventArgs = static_cast<const CEGUI::WindowEventArgs&>( event );
+-	bool enabled = static_cast<CEGUI::Checkbox *>( windowEventArgs.window )->isSelected();
++	bool enabled = static_cast<CEGUI::ToggleButton *>( windowEventArgs.window )->isSelected();
+ 
+ 	Set_Continuous( enabled );
+ 
+diff -ur smc-1.9/src/core/editor.cpp smc-1.9.new/src/core/editor.cpp
+--- smc-1.9/src/core/editor.cpp	2014-06-13 16:52:56.034173377 +0200
++++ smc-1.9.new/src/core/editor.cpp	2014-06-13 16:49:31.619139693 +0200
+@@ -35,7 +35,7 @@
+ #include "boost/filesystem/convenience.hpp"
+ namespace fs = boost::filesystem;
+ // CEGUI
+-#include "CEGUIXMLParser.h"
++#include <CEGUI/XMLParser.h>
+ 
+ namespace SMC
+ {
+@@ -82,8 +82,8 @@
+ {
+ 	// CEGUI settings
+ 	list_text->setTextColours( Get_Massive_Type_Color( sprite_obj->m_massive_type ).Get_cegui_Color() );
+-	list_text->setSelectionColours( CEGUI::colour( 0.33f, 0.33f, 0.33f ) );
+-	list_text->setSelectionBrushImage( "TaharezLook", "ListboxSelectionBrush" );
++	list_text->setSelectionColours( CEGUI::Colour( 0.33f, 0.33f, 0.33f ) );
++	list_text->setSelectionBrushImage( "ListboxSelectionBrush" );
+ 
+ 	// image dimension text
+ 	// string size_text = int_to_string( static_cast<int>(image->w) ) + "x" + int_to_string( static_cast<int>(image->h) );
+@@ -106,9 +106,9 @@
+ 	*/
+ }
+ 
+-CEGUI::Size cEditor_Item_Object :: getPixelSize( void ) const
++CEGUI::Sizef cEditor_Item_Object :: getPixelSize( void ) const
+ {
+-	CEGUI::Size tmp = list_text->getPixelSize();
++	CEGUI::Sizef tmp = list_text->getPixelSize();
+ 
+ 	if( pPreferences->m_editor_show_item_images )
+ 	{
+@@ -118,7 +118,7 @@
+ 	return tmp;
+ }
+ 
+-void cEditor_Item_Object :: draw( CEGUI::GeometryBuffer &buffer, const CEGUI::Rect &targetRect, float alpha, const CEGUI::Rect *clipper ) const
++void cEditor_Item_Object :: draw( CEGUI::GeometryBuffer &buffer, const CEGUI::Rectf &targetRect, float alpha, const CEGUI::Rectf *clipper ) const
+ {
+ 	// draw text
+ 	list_text->draw( buffer, targetRect, alpha, clipper );
+@@ -192,8 +192,8 @@
+ 
+ void cEditor_Menu_Object :: Init( void )
+ {
+-	setSelectionColours( CEGUI::colour( 0.33f, 0.33f, 0.33f ) );
+-	setSelectionBrushImage( "TaharezLook", "ListboxSelectionBrush" );
++	setSelectionColours( CEGUI::Colour( 0.33f, 0.33f, 0.33f ) );
++	setSelectionBrushImage( "ListboxSelectionBrush" );
+ }
+ 
+ /* *** *** *** *** *** *** *** cEditor *** *** *** *** *** *** *** *** *** *** */
+@@ -225,7 +225,7 @@
+ 	}
+ 
+ 	// Create Editor CEGUI Window
+-	editor_window = CEGUI::WindowManager::getSingleton().loadWindowLayout( "editor.layout" );
++	editor_window = CEGUI::WindowManager::getSingleton().loadWindowLayoutFromFile( "editor.layout" );
+ 	pGuiSystem->getGUISheet()->addChildWindow( editor_window );
+ 
+ 	// Get TabControl
+@@ -937,7 +937,7 @@
+ 	return 1;
+ }
+ 
+-void cEditor :: Add_Menu_Object( const std::string &name, std::string tags, CEGUI::colour normal_color /* = CEGUI::colour( 1, 1, 1 ) */ )
++void cEditor :: Add_Menu_Object( const std::string &name, std::string tags, CEGUI::Colour normal_color /* = CEGUI::Colour( 1, 1, 1 ) */ )
+ {
+ 	// Create Menu Object
+ 	cEditor_Menu_Object *new_menu = new cEditor_Menu_Object( name );
+@@ -958,7 +958,7 @@
+ 		tags.erase( 0, 6 );
+ 
+ 		// header color rect
+-		new_menu->setTextColours( normal_color, normal_color, CEGUI::colour( 0.5f, 0.5f, 0.5f ), CEGUI::colour( 0.5f, 0.5f, 0.5f ) );
++		new_menu->setTextColours( normal_color, normal_color, CEGUI::Colour( 0.5f, 0.5f, 0.5f ), CEGUI::Colour( 0.5f, 0.5f, 0.5f ) );
+ 		// not selectable
+ 		new_menu->setDisabled( 1 );
+ 		// set tooltip
+diff -ur smc-1.9/src/core/editor.h smc-1.9.new/src/core/editor.h
+--- smc-1.9/src/core/editor.h	2014-06-13 16:52:56.035173353 +0200
++++ smc-1.9.new/src/core/editor.h	2014-06-13 16:44:16.220802341 +0200
+@@ -21,8 +21,8 @@
+ #include "../gui/hud.h"
+ #include "../video/img_settings.h"
+ // CEGUI
+-#include "CEGUIXMLHandler.h"
+-#include "CEGUIXMLAttributes.h"
++#include <CEGUI/XMLHandler.h>
++#include <CEGUI/XMLAttributes.h>
+ 
+ namespace SMC
+ {
+@@ -60,9 +60,9 @@
+ 	\return
+ 		Size object describing the size of the list box item in pixels.
+ 	*/
+-	virtual	CEGUI::Size getPixelSize( void ) const;
++	virtual	CEGUI::Sizef getPixelSize( void ) const;
+ 	// draw
+-	void draw( CEGUI::GeometryBuffer &buffer, const CEGUI::Rect &targetRect, float alpha, const CEGUI::Rect *clipper ) const;
++	void draw( CEGUI::GeometryBuffer &buffer, const CEGUI::Rectf &targetRect, float alpha, const CEGUI::Rectf *clipper ) const;
+ 	// draw image
+ 	void Draw_Image( void );
+ 
+@@ -145,7 +145,7 @@
+ 	// ##### Main Menu
+ 
+ 	// Add Menu Entry
+-	void Add_Menu_Object( const std::string &name, std::string tags, CEGUI::colour normal_color = CEGUI::colour( 1, 1, 1 ) );
++	void Add_Menu_Object( const std::string &name, std::string tags, CEGUI::Colour normal_color = CEGUI::Colour( 1, 1, 1 ) );
+ 	// Set Active Menu Entry
+ 	virtual void Activate_Menu_Item( cEditor_Menu_Object *entry );
+ 
+diff -ur smc-1.9/src/level/level.h smc-1.9.new/src/level/level.h
+--- smc-1.9/src/level/level.h	2009-08-16 18:46:36.000000000 +0200
++++ smc-1.9.new/src/level/level.h	2014-06-10 16:56:11.589927166 +0200
+@@ -24,8 +24,8 @@
+ #include "../objects/level_entry.h"
+ #include "../audio/random_sound.h"
+ // CEGUI
+-#include "CEGUIXMLHandler.h"
+-#include "CEGUIXMLAttributes.h"
++#include <CEGUI/XMLHandler.h>
++#include <CEGUI/XMLAttributes.h>
+ 
+ namespace SMC
+ {
+diff -ur smc-1.9/src/overworld/overworld.h smc-1.9.new/src/overworld/overworld.h
+--- smc-1.9/src/overworld/overworld.h	2009-08-16 18:51:18.000000000 +0200
++++ smc-1.9.new/src/overworld/overworld.h	2014-06-13 16:08:13.552423619 +0200
+@@ -24,8 +24,8 @@
+ #include "../gui/hud.h"
+ #include "../audio/random_sound.h"
+ // CEGUI
+-#include "CEGUIXMLHandler.h"
+-#include "CEGUIXMLAttributes.h"
++#include <CEGUI/XMLHandler.h>
++#include <CEGUI/XMLAttributes.h>
+ 
+ namespace SMC
+ {
+diff -ur smc-1.9/src/overworld/world_layer.h smc-1.9.new/src/overworld/world_layer.h
+--- smc-1.9/src/overworld/world_layer.h	2009-08-09 04:49:54.000000000 +0200
++++ smc-1.9.new/src/overworld/world_layer.h	2014-06-13 16:07:54.416891334 +0200
+@@ -21,8 +21,8 @@
+ #include "../core/obj_manager.h"
+ #include "../overworld/world_waypoint.h"
+ // CEGUI
+-#include "CEGUIXMLHandler.h"
+-#include "CEGUIXMLAttributes.h"
++#include <CEGUI/XMLHandler.h>
++#include <CEGUI/XMLAttributes.h>
+ 
+ namespace SMC
+ {
+diff -ur smc-1.9/src/overworld/world_manager.h smc-1.9.new/src/overworld/world_manager.h
+--- smc-1.9/src/overworld/world_manager.h	2009-02-18 05:10:14.000000000 +0100
++++ smc-1.9.new/src/overworld/world_manager.h	2014-06-13 16:07:34.577376260 +0200
+@@ -20,8 +20,8 @@
+ #include "../core/obj_manager.h"
+ #include "../core/camera.h"
+ // CEGUI
+-#include "CEGUIXMLHandler.h"
+-#include "CEGUIXMLAttributes.h"
++#include <CEGUI/XMLHandler.h>
++#include <CEGUI/XMLAttributes.h>
+ 
+ namespace SMC
+ {
+diff -ur smc-1.9/src/user/preferences.h smc-1.9.new/src/user/preferences.h
+--- smc-1.9/src/user/preferences.h	2009-04-12 16:32:24.000000000 +0200
++++ smc-1.9.new/src/user/preferences.h	2014-06-13 16:08:47.054604748 +0200
+@@ -20,8 +20,8 @@
+ // SDL
+ #include "SDL.h"
+ // CEGUI
+-#include "CEGUIXMLHandler.h"
+-#include "CEGUIXMLAttributes.h"
++#include <CEGUI/XMLHandler.h>
++#include <CEGUI/XMLAttributes.h>
+ 
+ namespace SMC
+ {
+diff -ur smc-1.9/src/video/video.h smc-1.9.new/src/video/video.h
+--- smc-1.9/src/video/video.h	2014-06-13 16:52:56.037173304 +0200
++++ smc-1.9.new/src/video/video.h	2014-06-13 16:38:54.599616173 +0200
+@@ -22,8 +22,8 @@
+ #include "SDL_image.h"
+ #include "SDL_opengl.h"
+ // CEGUI
+-#include "CEGUI.h"
+-#include <RendererModules/OpenGL/CEGUIOpenGLRenderer.h>
++#include <CEGUI/CEGUI.h>
++#include <CEGUI/RendererModules/OpenGL/GLRenderer.h>
+ 
+ namespace SMC
+ {
+@@ -41,7 +41,7 @@
+ 
+ 	// Returns a matching Color value
+ 	SDL_Color Get_SDL_Color( void ) const;
+-	CEGUI::colour Get_cegui_Color( void ) const;
++	CEGUI::Colour Get_cegui_Color( void ) const;
+ 
+ 	// += operator
+ 	inline void operator += ( const Color &c )
+@@ -134,10 +134,10 @@
+ class cFake_GeometryBuffer : public CEGUI::GeometryBuffer
+ {
+     void draw() const {}
+-    void setTranslation(const CEGUI::Vector3&) {}
+-    void setRotation(const CEGUI::Vector3&) {}
+-    void setPivot(const CEGUI::Vector3&) {}
+-    void setClippingRegion(const CEGUI::Rect&) {}
++    void setTranslation(const CEGUI::Vector3f&) {}
++    void setRotation(const CEGUI::Quaternion& r) {}
++    void setPivot(const CEGUI::Vector3f&) {}
++    void setClippingRegion(const CEGUI::Rectf&) {}
+     void appendVertex(const CEGUI::Vertex&) {}
+     void appendGeometry(const CEGUI::Vertex* const, CEGUI::uint) {}
+     void setActiveTexture(CEGUI::Texture*) {}
+@@ -146,7 +146,11 @@
+     CEGUI::uint getVertexCount() const { return 0; }
+     CEGUI::uint getBatchCount() const { return 0; }
+     void setRenderEffect(CEGUI::RenderEffect*) {}
+-    CEGUI::RenderEffect* getRenderEffect() { return 0; }
++    CEGUI::RenderEffect* getRenderEffect() { return 0; }
++    void setBlendMode(const CEGUI::BlendMode mode) {}
++    CEGUI::BlendMode getBlendMode() const { return d_blendMode; }
++    void setClippingActive(const bool active) {}
++    bool isClippingActive() const { return false; }
+ };
+ 
+ class cFake_Texture : public CEGUI::Texture
+@@ -156,34 +160,39 @@
+         m_size(1, 1),
+         m_scaling(1, 1)
+     {}
+-
+-    const CEGUI::Size& getSize() const { return m_size; }
+-    const CEGUI::Size& getOriginalDataSize() const { return m_size; }
+-    const CEGUI::Vector2& getTexelScaling() const { return m_scaling; }
++
++    const CEGUI::String& getName() const { return m_name; }
++    const CEGUI::Sizef& getSize() const { return m_size; }
++    const CEGUI::Sizef& getOriginalDataSize() const { return m_size; }
++    const CEGUI::Vector2f& getTexelScaling() const { return m_scaling; }
+     void loadFromFile(const CEGUI::String&, const CEGUI::String&) {}
+-    void loadFromMemory(const void*, const CEGUI::Size&, CEGUI::Texture::PixelFormat) {}
+-    void saveToMemory(void*) {}
+-
+-private:
+-    CEGUI::Size m_size;
+-    CEGUI::Vector2 m_scaling;
++    void loadFromMemory(const void*, const CEGUI::Sizef&, CEGUI::Texture::PixelFormat) {}
++    void saveToMemory(void*) {}
++    void blitFromMemory(const void* sourceData, const CEGUI::Rectf& area) {}
++    void blitToMemory(void* targetData) {}
++    bool isPixelFormatSupported(const PixelFormat fmt) const { return false; }
++
++private:
++    CEGUI::String m_name;
++    CEGUI::Sizef m_size;
++    CEGUI::Vector2f m_scaling;
+ };
+ 
+ class cFake_RenderTarget : public CEGUI::RenderTarget
+ {
+ public:
+-    cFake_RenderTarget() : m_area(0, 0, 0, 0) {}
+-    void draw(const CEGUI::GeometryBuffer&) {}
+-    void draw(const CEGUI::RenderQueue&) {}
+-    void setArea(const CEGUI::Rect&) {}
+-    const CEGUI::Rect& getArea() const { return m_area; }
++    cFake_RenderTarget() : m_area(0, 0, 0, 0) {}
++    void draw(const CEGUI::GeometryBuffer& buffer) {}
++    void draw(const CEGUI::RenderQueue& queue) {}
++    void setArea(const CEGUI::Rectf& area) {}
++    const CEGUI::Rectf& getArea() const { return m_area; }
+     bool isImageryCache() const { return false; }
+     void activate() {}
+     void deactivate() {}
+-    void unprojectPoint(const CEGUI::GeometryBuffer&, const CEGUI::Vector2&, CEGUI::Vector2&) const {}
++    void unprojectPoint(const CEGUI::GeometryBuffer&, const CEGUI::Vector2f&, CEGUI::Vector2f&) const {}
+ 
+ private:
+-    CEGUI::Rect m_area;
++    CEGUI::Rectf m_area;
+ };
+ 
+ class cFake_Renderer : public CEGUI::Renderer
+@@ -192,11 +201,10 @@
+ 	cFake_Renderer( void ) :
+         m_size(0, 0),
+         m_dpi(0, 0),
+-        m_identifierString("Fake Renderer"),
+-        m_root(m_target)
++        m_identifierString("Fake Renderer")
+ 	{}
+ 
+-    CEGUI::RenderingRoot& getDefaultRenderingRoot() { return m_root; }
++    CEGUI::RenderTarget& getDefaultRenderTarget() { return m_target; }
+     CEGUI::GeometryBuffer& createGeometryBuffer() { return m_geometry; }
+     void destroyGeometryBuffer(const CEGUI::GeometryBuffer&) {}
+     void destroyAllGeometryBuffers() {}
+@@ -205,25 +213,24 @@
+     void destroyAllTextureTargets() {}
+     CEGUI::Texture& createTexture() { return m_texture; }
+     CEGUI::Texture& createTexture(const CEGUI::String&, const CEGUI::String&) { return m_texture; }
+-    CEGUI::Texture& createTexture(const CEGUI::Size&) { return m_texture; }
++    CEGUI::Texture& createTexture(const CEGUI::Sizef&) { return m_texture; }
+     void destroyTexture(CEGUI::Texture&) {}
+     void destroyAllTextures() {}
+     void beginRendering() {}
+     void endRendering() {}
+-    void setDisplaySize(const CEGUI::Size&) {}
+-    const CEGUI::Size& getDisplaySize() const { return m_size; }
+-    const CEGUI::Vector2& getDisplayDPI() const {return m_dpi; }
++    void setDisplaySize(const CEGUI::Sizef&) {}
++    const CEGUI::Sizef& getDisplaySize() const { return m_size; }
++    const CEGUI::Vector2f& getDisplayDPI() const {return m_dpi; }
+     CEGUI::uint getMaxTextureSize() const { return 0; }
+     const CEGUI::String& getIdentifierString() const { return m_identifierString; }
+ 
+ private:
+-    CEGUI::Size m_size;
+-    CEGUI::Vector2 m_dpi;
++    CEGUI::Sizef m_size;
++    CEGUI::Vector2f m_dpi;
+     CEGUI::String m_identifierString;
+     cFake_GeometryBuffer m_geometry;
+     cFake_Texture m_texture;
+     cFake_RenderTarget m_target;
+-    CEGUI::RenderingRoot m_root;
+ };
+ 
+ /* *** *** *** *** *** *** *** Video class *** *** *** *** *** *** *** *** *** *** */

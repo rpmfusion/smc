@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -10,14 +10,16 @@ Source1:        smc.sh
 Source2:        dochelper.pl
 # suggested in http://thread.gmane.org/gmane.linux.redhat.fedora.rpmfusion.devel/7651/focus=7665
 Patch0:         http://repo.calcforge.org/temp/smc-1.9-fix-implicit-linking.patch
-# patch from upstream forum
+# patch from upstream forum, not applied as we use the 0.6 compat pkg
 Patch1:         smc-fixes-for-cegui-v0-7.diff
 # submitted upstream
 Patch2:         smc-1.9-boost-filesystem-v3.patch
+# incomplete, must be finished to be able to move to cegui-0.8.x
+Patch3:         smc-1.9-cegui-0.8.patch
 BuildRequires:  libX11-devel
 BuildRequires:  gettext-devel
 BuildRequires:  boost-devel >= 1.54
-BuildRequires:  cegui-devel >= 0.7
+BuildRequires:  cegui06-devel
 BuildRequires:  libGLU-devel
 BuildRequires:  pkgconfig >= 0.9.0
 BuildRequires:  SDL-devel >= 1.2.10
@@ -27,6 +29,7 @@ BuildRequires:  SDL_mixer-devel >= 1.2.0
 BuildRequires:  SDL_gfx-devel
 BuildRequires:  libpng-devel
 BuildRequires:  zlib-devel
+BuildRequires:  autoconf automake libtool
 BuildRequires:  desktop-file-utils
 Requires:       hicolor-icon-theme
 
@@ -40,8 +43,9 @@ built upon SDL. It is similar to the classic game Super Mario.
 #Fix EOL chars
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
 %patch0 -p1 -b .patch0
-%patch1 -p1 -b .cegui07
 %patch2 -p1
+sed -i 's/CEGUI-OPENGL/CEGUI-OPENGL-0.6/' configure.ac
+autoreconf -i -f
 
 
 %build
@@ -113,6 +117,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Jun 13 2014 Hans de Goede <j.w.r.degoede@gmail.com> - 1.9-16
+- cegui-0.8.x breaks api in a major way, switch to using cegui06
+
 * Fri May 30 2014 Hans de Goede <j.w.r.degoede@gmail.com> - 1.9-15
 - Rebuild for new libboost
 
