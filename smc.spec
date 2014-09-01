@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -117,6 +117,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Sep 01 2014 Sérgio Basto <sergio@serjux.com> - 1.9-17
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Fri Jun 13 2014 Hans de Goede <j.w.r.degoede@gmail.com> - 1.9-16
 - cegui-0.8.x breaks api in a major way, switch to using cegui06
 
