@@ -18,6 +18,7 @@ Patch2:         smc-1.9-boost-filesystem-v3.patch
 Patch3:         smc-1.9-cegui-0.8.patch
 BuildRequires:  libX11-devel
 BuildRequires:  gettext-devel
+BuildRequires:  gcc-c++
 BuildRequires:  boost-devel >= 1.54
 BuildRequires:  cegui06-devel
 BuildRequires:  libGLU-devel
