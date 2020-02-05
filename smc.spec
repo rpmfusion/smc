@@ -1,6 +1,6 @@
 Name:           smc
 Version:        1.9
-Release:        25%{?dist}
+Release:        26%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
 License:        GPLv3
@@ -118,6 +118,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Feb 05 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.9-26
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Fri Aug 09 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.9-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
