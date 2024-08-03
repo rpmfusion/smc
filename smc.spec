@@ -43,8 +43,8 @@ built upon SDL. It is similar to the classic game Super Mario.
 %setup -q
 #Fix EOL chars
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
-%patch0 -p1 -b .patch0
-%patch2 -p1
+%patch -P0 -p1 -b .patch0
+%patch -P2 -p1
 sed -i 's/CEGUI-OPENGL/CEGUI-OPENGL-0.6/' configure.ac
 autoreconf -i -f
 
