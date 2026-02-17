@@ -1,0 +1,120 @@
+diff -uNrp a/src/core/editor.cpp b/src/core/editor.cpp
+--- a/src/core/editor.cpp	2009-08-13 16:11:42.000000000 +0100
++++ b/src/core/editor.cpp	2026-02-17 12:59:02.180791101 +0000
+@@ -32,7 +32,7 @@
+ #include "../core/i18n.h"
+ #include "../core/filesystem/filesystem.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // CEGUI
+ #include "CEGUIXMLParser.h"
+diff -uNrp a/src/core/filesystem/filesystem.cpp b/src/core/filesystem/filesystem.cpp
+--- a/src/core/filesystem/filesystem.cpp	2009-07-04 11:11:18.000000000 +0100
++++ b/src/core/filesystem/filesystem.cpp	2026-02-17 12:59:02.180652236 +0000
+@@ -15,7 +15,7 @@
+ 
+ #include "../../core/filesystem/filesystem.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // needed for the stat function and to get the user directory on unix
+ #include <sys/stat.h>
+diff -uNrp a/src/core/game_core.cpp b/src/core/game_core.cpp
+--- a/src/core/game_core.cpp	2009-08-16 17:44:42.000000000 +0100
++++ b/src/core/game_core.cpp	2026-02-17 12:59:02.181508615 +0000
+@@ -32,7 +32,7 @@
+ #include "../core/i18n.h"
+ #include "../core/filesystem/filesystem.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ 
+ #ifdef __unix__
+diff -uNrp a/src/enemies/eato.cpp b/src/enemies/eato.cpp
+--- a/src/enemies/eato.cpp	2009-08-04 15:35:16.000000000 +0100
++++ b/src/enemies/eato.cpp	2026-02-17 12:59:02.171156520 +0000
+@@ -21,7 +21,7 @@
+ #include "../core/i18n.h"
+ #include "../core/filesystem/filesystem.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // CEGUI
+ #include "CEGUIXMLAttributes.h"
+diff -uNrp a/src/enemies/flyon.cpp b/src/enemies/flyon.cpp
+--- a/src/enemies/flyon.cpp	2009-08-11 10:36:08.000000000 +0100
++++ b/src/enemies/flyon.cpp	2026-02-17 12:59:02.178508526 +0000
+@@ -24,7 +24,7 @@
+ #include "../core/i18n.h"
+ #include "../core/filesystem/filesystem.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // CEGUI
+ #include "CEGUIXMLAttributes.h"
+diff -uNrp a/src/enemies/thromp.cpp b/src/enemies/thromp.cpp
+--- a/src/enemies/thromp.cpp	2009-08-04 15:27:12.000000000 +0100
++++ b/src/enemies/thromp.cpp	2026-02-17 12:59:02.171382421 +0000
+@@ -26,7 +26,7 @@
+ #include "../core/i18n.h"
+ #include "../core/filesystem/filesystem.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // CEGUI
+ #include "CEGUIXMLAttributes.h"
+diff -uNrp a/src/gui/menu_data.cpp b/src/gui/menu_data.cpp
+--- a/src/gui/menu_data.cpp	2009-08-16 17:14:58.000000000 +0100
++++ b/src/gui/menu_data.cpp	2026-02-17 12:59:02.170508291 +0000
+@@ -34,7 +34,7 @@
+ #include "../core/filesystem/filesystem.h"
+ #include "../core/filesystem/resource_manager.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ 
+ namespace SMC
+diff -uNrp a/src/overworld/world_manager.cpp b/src/overworld/world_manager.cpp
+--- a/src/overworld/world_manager.cpp	2009-08-16 17:44:52.000000000 +0100
++++ b/src/overworld/world_manager.cpp	2026-02-17 12:59:02.183083460 +0000
+@@ -19,7 +19,7 @@
+ #include "../core/filesystem/filesystem.h"
+ #include "../core/filesystem/resource_manager.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // CEGUI
+ #include "CEGUIXMLParser.h"
+diff -uNrp a/src/user/preferences.cpp b/src/user/preferences.cpp
+--- a/src/user/preferences.cpp	2009-05-12 09:21:26.000000000 +0100
++++ b/src/user/preferences.cpp	2026-02-17 12:59:02.169508261 +0000
+@@ -24,7 +24,7 @@
+ #include "../core/filesystem/resource_manager.h"
+ #include "../core/filesystem/filesystem.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // CEGUI
+ #include "CEGUIXMLParser.h"
+diff -uNrp a/src/video/video.cpp b/src/video/video.cpp
+--- a/src/video/video.cpp	2009-07-04 10:46:56.000000000 +0100
++++ b/src/video/video.cpp	2026-02-17 12:59:02.184269510 +0000
+@@ -34,7 +34,7 @@
+ #include "CEGUIDefaultResourceProvider.h"
+ #include "CEGUIDefaultLogger.h"
+ // boost filesystem
+-#include "boost/filesystem/convenience.hpp"
++#include <boost/filesystem.hpp>
+ namespace fs = boost::filesystem;
+ // png
+ #include <png.h>

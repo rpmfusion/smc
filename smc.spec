@@ -3,7 +3,7 @@ Version:        1.9
 Release:        40%{?dist}
 Summary:        2D platform game that uses OpenGL in a style similar to Super Mario
 Group:          Amusements/Games
-License:        GPLv3
+License:        GPL-3.0-only
 URL:            http://www.secretmaryo.org
 Source0:        http://downloads.sourceforge.net/smclone/%{name}-%{version}.tar.bz2
 Source1:        smc.sh
@@ -16,6 +16,7 @@ Patch1:         smc-fixes-for-cegui-v0-7.diff
 Patch2:         smc-1.9-boost-filesystem-v3.patch
 # incomplete, must be finished to be able to move to cegui-0.8.x
 Patch3:         smc-1.9-cegui-0.8.patch
+Patch4:         smc-1.9-boost-filesystem-convenience.patch
 BuildRequires:  libX11-devel
 BuildRequires:  gettext-devel
 BuildRequires:  gcc-c++
@@ -45,13 +46,14 @@ built upon SDL. It is similar to the classic game Super Mario.
 sed -i 's/\r//' docs/style.css docs/*.html docs/*.txt
 %patch -P0 -p1 -b .patch0
 %patch -P2 -p1
+%patch -P4 -p1
 sed -i 's/CEGUI-OPENGL/CEGUI-OPENGL-0.6/' configure.ac
 autoreconf -i -f
 
 
 %build
 %configure LIBS=-lboost_system
-make %{?_smp_mflags}
+%make_build
 
 # Generate the credit list from lots of little text files scattered around the
 # installation. Very messy! A helper script is used to avoid over-complicating
@@ -80,7 +82,7 @@ EOF
 
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
 install -pm0644 data/icon/window_32.png \
   %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
@@ -88,24 +90,8 @@ mv %{buildroot}%{_bindir}/%{name} %{buildroot}%{_bindir}/%{name}.bin
 install -pm0755 %{SOURCE1} %{buildroot}%{_bindir}/%{name}
 
 desktop-file-install \
-%if 0%{?fedora} && 0%{?fedora} < 19
-                     --vendor dribble \
-%endif
-                     --dir %{buildroot}%{_datadir}/applications \
-                     %{name}.desktop
-
-
-%post
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-%postun
-if [ $1 -eq 0 ] ; then
-    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+ --dir %{buildroot}%{_datadir}/applications \
+ %{name}.desktop
 
 
 %files
